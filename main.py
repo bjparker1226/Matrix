@@ -18,7 +18,7 @@ MONITOR_HEIGHT = GetSystemMetrics(1)
 ### initialize pygame
 
 pg.init()
-screen = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT))
+screen = pg.display.set_mode((320, 180))
 clock = pg.time.Clock()
 
 ### initialize Glyph Field
@@ -26,11 +26,11 @@ clock = pg.time.Clock()
 field = field.Field(MONITOR_WIDTH, MONITOR_HEIGHT, 96, 54)
 glyphFont = pg.font.Font('./src/txt/fonts/NaruMonoDemo-Regular.ttf', field.glyphSize)
 
-def rainbowShader(location):
+def rainbowShader(location, timer):
     loc = location
     outCont = [255, 0, 0]
-    steps = math.floor((loc[0] + loc[1]) / 255)
-    remaining = (loc[0] + loc[1]) % 255
+    steps = math.floor((loc[0] + loc[1] + timer * 4) / 255)
+    remaining = (loc[0] + loc[1] + timer * 4) % 255
 
     match steps % 6:
         case 0:
@@ -72,6 +72,8 @@ if __name__ == '__main__':
 
     tempGlyphColor = (255,255,255,255)
 
+    timer = 0
+
     while running:
 
         field.updated = []
@@ -109,7 +111,7 @@ if __name__ == '__main__':
         pxarray = pg.PixelArray(screen)
         for column in range(len(pxarray)):
             for row in range(len(pxarray[column])):
-                color = rainbowShader((column, row))
+                color = rainbowShader((column, row), timer)
                 pxarray[column][row] = color
 
         toBlit.append(pxarray.make_surface())
@@ -124,5 +126,6 @@ if __name__ == '__main__':
         pg.display.update()
 
         clock.tick(CLOCK_SPEED)
+        timer += 1
 
     pg.quit()
