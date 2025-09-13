@@ -27,6 +27,7 @@ class Field:
 
             for row in range(self.rows):
                 rowContents.append(Glyph(self.cellWidth * column, self.cellHeight * row, self.glyphSize, self))
+                print(f"Created glyph #{column + row}")
 
             self.grid.append(rowContents)
 

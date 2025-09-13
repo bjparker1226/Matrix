@@ -1,6 +1,5 @@
-from unittest import case
-
 import pygame as pg
+import sprite_handler as sh
 from win32api import GetSystemMetrics
 from glyph import Glyph
 from droplet import Droplet
@@ -9,7 +8,7 @@ import field, os, random, math
 ### Declare globals
 CLOCK_SPEED = 60
 DROPLET_CHECK = pg.event.custom_type()
-DROPLET_CHECKRATE = 150
+DROPLET_CHECKRATE = 200
 
 ### Get monitor info
 MONITOR_WIDTH = GetSystemMetrics(0)
@@ -18,8 +17,12 @@ MONITOR_HEIGHT = GetSystemMetrics(1)
 ### initialize pygame
 
 pg.init()
-screen = pg.display.set_mode((320, 180))
+screen = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT))
 clock = pg.time.Clock()
+
+# shader stuff
+
+handler = sh.ShaderHandler()
 
 ### initialize Glyph Field
 
@@ -56,10 +59,6 @@ def rainbowShader(location, timer):
             outCont[2] = 255 - remaining
 
     output = (outCont[0], outCont[1], outCont[2])
-    # print("Column #%d. %s steps! %s" % (location[0], steps, str(output)))
-
-    if loc[0] == 765:
-        pass
 
     return output
 
@@ -79,6 +78,7 @@ if __name__ == '__main__':
         field.updated = []
 
         # list of items to be rendered to the screen
+        toShade = []
         toBlit = []
 
         # poll for events
@@ -101,29 +101,30 @@ if __name__ == '__main__':
 
         field.update()
 
-        # for glyph in field.updated:
-        #         color = glyph.renderColor
-        #         toBlit.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
-
         # wipe screen
         screen.fill((0,0,0))
 
-        pxarray = pg.PixelArray(screen)
-        for column in range(len(pxarray)):
-            for row in range(len(pxarray[column])):
-                color = rainbowShader((column, row), timer)
-                pxarray[column][row] = color
+        # pxarray = pg.PixelArray(screen)
+        # for column in range(len(pxarray)):
+        #     for row in range(len(pxarray[column])):
+        #         color = rainbowShader((column, row), timer)
+        #         pxarray[column][row] = color
+        #
+        # toBlit.append([pxarray.make_surface(), (0, 0)])
+        # pxarray.close()
 
-        toBlit.append(pxarray.make_surface())
-        pxarray.close()
+        for glyph in field.updated:
+                toShade.append(glyph)
+
+        handler.addSprite(toShade)
+        toBlit = handler.shade()
 
         # update screen
 
-        for sprite in toBlit:
-            # screen.blit(sprite[0],sprite[1])
-            screen.blit(sprite, (0,0))
+        screen.blits(toBlit)
 
         pg.display.update()
+        handler.update()
 
         clock.tick(CLOCK_SPEED)
         timer += 1

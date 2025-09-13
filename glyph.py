@@ -10,14 +10,16 @@ class Glyph:
         self.location = (x, y)
         self.fontSize = int(fontSize)
         self.fontPath = './src/txt/fonts/NaruMonoDemo-Regular.ttf'
+        self.font = pg.font.Font(self.fontPath, self.fontSize)
         self.parent = parent
+        self.sprite = self.font.render(self.char, True, (255,255,255,255))
 
         kawi_pink = (255, 5, 109)
         tropical_ocean = (0, 255, 208)
 
         self.vertMarg = parent.vertMarg
         self.horMarg = 0
-        self.trueColor = (kawi_pink)
+        self.trueColor = (255,255,255,255)
         self.renderColor = self.trueColor
         self.pingDuration = 0
         self.flashSpeed = 0
@@ -29,7 +31,9 @@ class Glyph:
 
         self.brightness -= 1
 
-        self.updateColor()
+        # self.updateColor()
+
+        self.updateSprite()
 
         self.parent.updated.append(self)
 
@@ -60,6 +64,9 @@ class Glyph:
                 newColor[value] = 255
 
         self.renderColor = (newColor[0], newColor[1], newColor[2])
+
+    def updateSprite(self):
+        self.sprite = self.font.render(self.char, True, self.renderColor)
 
     def ping(self, duration):
         self.pingDuration = duration
