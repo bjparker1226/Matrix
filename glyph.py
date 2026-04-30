@@ -17,7 +17,7 @@ class Glyph:
 
         self.vertMarg = parent.vertMarg
         self.horMarg = 0
-        self.trueColor = (kawi_pink)
+        self.trueColor = ((255,255,255))
         self.renderColor = self.trueColor
         self.pingDuration = 0
         self.flashSpeed = 0
@@ -29,7 +29,7 @@ class Glyph:
 
         self.brightness -= 1
 
-        self.updateColor()
+        # self.updateColor()
 
         self.parent.updated.append(self)
 
@@ -59,7 +59,8 @@ class Glyph:
             if newColor[value] > 255:
                 newColor[value] = 255
 
-        self.renderColor = (newColor[0], newColor[1], newColor[2])
+        # self.renderColor = (newColor[0], newColor[1], newColor[2])
+        self.renderColor = (128,128,128)
 
     def ping(self, duration):
         self.pingDuration = duration

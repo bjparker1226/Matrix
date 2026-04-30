@@ -8,8 +8,8 @@ import field, os, random, math
 
 ### Declare globals
 CLOCK_SPEED = 60
-DROPLET_CHECK = pg.event.custom_type()
-DROPLET_CHECKRATE = 150
+# DROPLET_CHECK = pg.event.custom_type()
+# DROPLET_CHECKRATE = 150
 
 ### Get monitor info
 MONITOR_WIDTH = GetSystemMetrics(0)
@@ -66,7 +66,7 @@ def rainbowShader(location, timer):
 
 if __name__ == '__main__':
 
-    pg.time.set_timer(DROPLET_CHECK, DROPLET_CHECKRATE)
+    # pg.time.set_timer(DROPLET_CHECK, DROPLET_CHECKRATE)
 
     running = True
 
@@ -91,18 +91,35 @@ if __name__ == '__main__':
                 if event.key == pg.K_ESCAPE:
                     running = False
 
-            elif event.type == DROPLET_CHECK:
-                if random.randint(0,9) > 5:
-                    # tempGlyphColor = (random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
-                    field.newDroplet(random.randint(0,field.columns-1))
-                    pg.event.clear(DROPLET_CHECK)
-                    print("New droplet!")
+            # elif event.type == DROPLET_CHECK:
+            #     if random.randint(0,9) > 5:
+            #         field.newDroplet(random.randint(0,field.columns-1))
+            #         pg.event.clear(DROPLET_CHECK)
+            #         print("New droplet!")
 
         field.update()
 
+        if random.randint(0, 49) > 48:
+            field.newDroplet(random.randint(0, field.columns - 1))
+
+        glyphs = []
+
         for glyph in field.updated:
                 color = glyph.renderColor
-                toBlit.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
+                glyphs.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
+
+        for glyph in glyphs:
+            pxarray = pg.PixelArray(glyph[0])
+            for column in range(len(pxarray)):
+                for row in range(len(pxarray[column])):
+                    if not pxarray[column][row] == 16777215:
+                        color = rainbowShader((glyph[1][0]+column, glyph[1][1]+row), timer)
+                        pxarray[column][row] = color
+
+            # pxarray.replace((255,255,255), rainbowShader(glyph[1], timer), 0, (0.299, 0.587, 0.114))
+
+            toBlit.append([pxarray.make_surface(),glyph[1]])
+            pxarray.close()
 
         # wipe screen
         screen.fill((0,0,0))
