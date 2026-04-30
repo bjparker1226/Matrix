@@ -18,7 +18,7 @@ MONITOR_HEIGHT = GetSystemMetrics(1)
 ### initialize pygame
 
 pg.init()
-screen = pg.display.set_mode((320, 180))
+screen = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT))
 clock = pg.time.Clock()
 
 ### initialize Glyph Field
@@ -83,7 +83,6 @@ if __name__ == '__main__':
 
         # poll for events
 
-
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
@@ -101,27 +100,27 @@ if __name__ == '__main__':
 
         field.update()
 
-        # for glyph in field.updated:
-        #         color = glyph.renderColor
-        #         toBlit.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
+        for glyph in field.updated:
+                color = glyph.renderColor
+                toBlit.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
 
         # wipe screen
         screen.fill((0,0,0))
 
-        pxarray = pg.PixelArray(screen)
-        for column in range(len(pxarray)):
-            for row in range(len(pxarray[column])):
-                color = rainbowShader((column, row), timer)
-                pxarray[column][row] = color
-
-        toBlit.append(pxarray.make_surface())
-        pxarray.close()
+        # pxarray = pg.PixelArray(screen)
+        # for column in range(len(pxarray)):
+        #     for row in range(len(pxarray[column])):
+        #         color = rainbowShader((column, row), timer)
+        #         pxarray[column][row] = color
+        #
+        # # toBlit.append(pxarray.make_surface())
+        # pxarray.close()
 
         # update screen
 
         for sprite in toBlit:
-            # screen.blit(sprite[0],sprite[1])
-            screen.blit(sprite, (0,0))
+            screen.blit(sprite[0],sprite[1])
+            # screen.blit(sprite, (0,0))
 
         pg.display.update()
 
