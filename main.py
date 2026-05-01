@@ -76,10 +76,10 @@ def main():
 
         for glyph in glyphs:
             pxarray = pg.PixelArray(glyph[0])
+            color = rainbowShader((glyph[1][0], glyph[1][1]),timer)
             for column in range(len(pxarray)):
                 for row in range(len(pxarray[column])):
                     if not pxarray[column][row] == 16777215:
-                        color = rainbowShader((glyph[1][0]+column, glyph[1][1]+row), timer)
                         pxarray[column][row] = color
 
             toBlit.append([pxarray.make_surface(),glyph[1]])
