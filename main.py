@@ -63,19 +63,19 @@ def main():
                     running = False
 
             elif event.type == DROPLET_CHECK and clock.get_fps() >= CLOCK_SPEED*0.8:
-                if random.randint(0,9) > 5:
+                if random.randint(0,9) > 2:
                     field.newDroplet(random.randint(0,field.columns-1))
                     pg.event.clear(DROPLET_CHECK)
 
         field.update()
 
-        glyphs = []
-
         for glyph in field.updated:
+            color = rainbowShader(glyph.blitLoc(),timer)
             if glyph.brightness > 0:
-                color = rainbowShader(glyph.blitLoc(),timer)
                 # glyphs.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
-                toBlit.append((glyphFont.render(glyph.char, True, color),glyph.blitLoc()))
+                textSurf = glyphFont.render(glyph.char, True, color)
+                textSurf.set_alpha(glyph.brightness)
+                toBlit.append((textSurf,glyph.blitLoc()))
             toUpdate.append(pg.Rect(glyph.blitLoc()[0], glyph.blitLoc()[1], field.cellWidth, field.cellHeight))
 
         # for glyph in glyphs:
@@ -149,7 +149,7 @@ def rainbowShader(location, timer):
             outCont[1] = 0
             outCont[2] = 255 - remaining
 
-    output = (outCont[0], outCont[1], outCont[2])
+    output = [outCont[0], outCont[1], outCont[2]]
     # print("Column #%d. %s steps! %s" % (location[0], steps, str(output)))
 
     if loc[0] == 765:
