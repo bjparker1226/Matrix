@@ -6,7 +6,10 @@ from glyph import Glyph
 from droplet import Droplet
 import field, os, random, math
 
-### Declare globals
+"""
+Declare globals
+"""
+
 CLOCK_SPEED = 60
 DROPLET_CHECK = pg.event.custom_type()
 DROPLET_CHECKRATE = 150
@@ -14,6 +17,7 @@ DROPLET_CHECKRATE = 150
 ### Get monitor info
 MONITOR_WIDTH = GetSystemMetrics(0)
 MONITOR_HEIGHT = GetSystemMetrics(1)
+
 
 ### initialize pygame ###
 
@@ -26,45 +30,7 @@ clock = pg.time.Clock()
 field = field.Field(MONITOR_WIDTH, MONITOR_HEIGHT, 96, 54)
 glyphFont = pg.font.Font('./src/txt/fonts/NaruMonoDemo-Regular.ttf', field.glyphSize)
 
-def rainbowShader(location, timer):
-    loc = location
-    outCont = [255, 0, 0]
-    steps = math.floor((loc[0] + loc[1] + timer * 4) / 255)
-    remaining = (loc[0] + loc[1] + timer * 4) % 255
-
-    match steps % 6:
-        case 0:
-            outCont[1] += remaining
-        case 1:
-            outCont[0] -= remaining
-            outCont[1] = 255
-        case 2:
-            outCont[0] = 0
-            outCont[1] = 255
-            outCont[2] += remaining
-        case 3:
-            outCont[0] = 0
-            outCont[1] = 255 - remaining
-            outCont[2] = 255
-        case 4:
-            outCont[0] = 0 + remaining
-            outCont[1] = 0
-            outCont[2] = 255
-        case 5:
-            outCont[0] = 255
-            outCont[1] = 0
-            outCont[2] = 255 - remaining
-
-    output = (outCont[0], outCont[1], outCont[2])
-    # print("Column #%d. %s steps! %s" % (location[0], steps, str(output)))
-
-    if loc[0] == 765:
-        pass
-
-    return output
-
-
-if __name__ == '__main__':
+def main():
 
     pg.time.set_timer(DROPLET_CHECK, DROPLET_CHECKRATE)
 
@@ -143,3 +109,46 @@ if __name__ == '__main__':
         timer += 1
 
     pg.quit()
+
+def rainbowShader(location, timer):
+    loc = location
+    outCont = [255, 0, 0]
+    steps = math.floor((loc[0] + loc[1] + timer * 4) / 255)
+    remaining = (loc[0] + loc[1] + timer * 4) % 255
+
+    match steps % 6:
+        case 0:
+            outCont[1] += remaining
+        case 1:
+            outCont[0] -= remaining
+            outCont[1] = 255
+        case 2:
+            outCont[0] = 0
+            outCont[1] = 255
+            outCont[2] += remaining
+        case 3:
+            outCont[0] = 0
+            outCont[1] = 255 - remaining
+            outCont[2] = 255
+        case 4:
+            outCont[0] = 0 + remaining
+            outCont[1] = 0
+            outCont[2] = 255
+        case 5:
+            outCont[0] = 255
+            outCont[1] = 0
+            outCont[2] = 255 - remaining
+
+    output = (outCont[0], outCont[1], outCont[2])
+    # print("Column #%d. %s steps! %s" % (location[0], steps, str(output)))
+
+    if loc[0] == 765:
+        pass
+
+    return output
+
+def fpsBox(surface, fps, size, location):
+    pass
+
+if __name__ == "__main__":
+    main()
