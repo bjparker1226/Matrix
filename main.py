@@ -78,18 +78,6 @@ def main():
                 toBlit.append((textSurf,glyph.blitLoc()))
             toUpdate.append(pg.Rect(glyph.blitLoc()[0], glyph.blitLoc()[1], field.cellWidth, field.cellHeight))
 
-        # for glyph in glyphs:
-        #     pxarray = pg.PixelArray(glyph[0])
-        #     color = rainbowShader((glyph[1][0], glyph[1][1]),timer)
-        #     for column in range(len(pxarray)):
-        #         for row in range(len(pxarray[column])):
-        #             if not pxarray[column][row] == 16777215:
-        #                 pxarray[column][row] = color
-        #
-        #     glyphSurf = pxarray.make_surface()
-        #     toBlit.append((glyphSurf,glyph[1]))
-        #
-        #     pxarray.close()
 
         # wipe screen
         screen.fill((0,0,0))

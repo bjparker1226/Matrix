@@ -35,30 +35,6 @@ class Glyph:
     def blitLoc(self):
         return (self.location[0] + self.horMarg, self.location[1] + self.vertMarg)
 
-    def updateColor(self):
-        newColor = [self.trueColor[0], self.trueColor[1], self.trueColor[2]]
-
-        if self.pingDuration > 0:
-            self.brightness = 255
-            for val in range(len(newColor)):
-                newColor[val] += self.pingDuration * (255 - self.trueColor[val]) * (1/self.flashSpeed)
-            self.pingDuration -= 1
-
-        else:
-            for val in range(len(self.trueColor)):
-                if newColor[val] > self.brightness:
-                    newColor[val] = self.brightness
-                else:
-                    newColor[val] = self.trueColor[val]
-
-        for value in range(len(newColor)):
-            if newColor[value] < 0:
-                newColor[value] = 0
-            if newColor[value] > 255:
-                newColor[value] = 255
-
-        # self.renderColor = (newColor[0], newColor[1], newColor[2])
-        self.renderColor = (128,128,128)
 
     def ping(self, duration):
         self.pingDuration = duration
