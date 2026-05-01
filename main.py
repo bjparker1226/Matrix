@@ -11,8 +11,8 @@ Declare globals
 """
 
 CLOCK_SPEED = 60
-# DROPLET_CHECK = pg.event.custom_type()
-# DROPLET_CHECKRATE = 150
+DROPLET_CHECK = pg.event.custom_type()
+DROPLET_CHECKRATE = 150
 
 ### Get monitor info
 MONITOR_WIDTH = GetSystemMetrics(0)
@@ -32,7 +32,12 @@ glyphFont = pg.font.Font('./src/txt/fonts/NaruMonoDemo-Regular.ttf', field.glyph
 
 def main():
 
-    # pg.time.set_timer(DROPLET_CHECK, DROPLET_CHECKRATE)
+    """
+    Custom events
+    """
+    pg.time.set_timer(DROPLET_CHECK, DROPLET_CHECKRATE)
+
+
 
     running = True
 
@@ -57,16 +62,13 @@ def main():
                 if event.key == pg.K_ESCAPE:
                     running = False
 
-            # elif event.type == DROPLET_CHECK:
-            #     if random.randint(0,9) > 5:
-            #         field.newDroplet(random.randint(0,field.columns-1))
-            #         pg.event.clear(DROPLET_CHECK)
-            #         print("New droplet!")
+            elif event.type == DROPLET_CHECK and clock.get_fps() >= CLOCK_SPEED*0.8:
+                if random.randint(0,9) > 5:
+                    field.newDroplet(random.randint(0,field.columns-1))
+                    pg.event.clear(DROPLET_CHECK)
+                    print("New droplet!")
 
         field.update()
-
-        if random.randint(0, 49) > 48 and clock.get_fps() >= CLOCK_SPEED*0.75:
-            field.newDroplet(random.randint(0, field.columns - 1))
 
         glyphs = []
 
