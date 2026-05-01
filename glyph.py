@@ -7,6 +7,7 @@ class Glyph:
     def __init__(self, x, y, fontSize, parent):
         self.char = '0'
         self.brightness = 0
+        self.transparency = 0
         self.location = (x, y)
         self.fontSize = int(fontSize)
         self.fontPath = './src/txt/fonts/NaruMonoDemo-Regular.ttf'
@@ -40,6 +41,3 @@ class Glyph:
         self.pingDuration = duration
         self.flashSpeed = duration
         self.brightness = 255
-
-    def setBrightness(self, brightness):
-        self.brightness = brightness
