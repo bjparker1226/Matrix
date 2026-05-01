@@ -15,13 +15,13 @@ DROPLET_CHECKRATE = 150
 MONITOR_WIDTH = GetSystemMetrics(0)
 MONITOR_HEIGHT = GetSystemMetrics(1)
 
-### initialize pygame
+### initialize pygame ###
 
 pg.init()
 screen = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT))
 clock = pg.time.Clock()
 
-### initialize Glyph Field
+### initialize Glyph Field ###
 
 field = field.Field(MONITOR_WIDTH, MONITOR_HEIGHT, 96, 54)
 glyphFont = pg.font.Font('./src/txt/fonts/NaruMonoDemo-Regular.ttf', field.glyphSize)
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
         for glyph in field.updated:
                 color = glyph.renderColor
-                toBlit.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
+                toBlit.append((glyphFont.render(glyph.char, True, color), glyph.blitLoc()))
 
         # wipe screen
         screen.fill((0,0,0))
@@ -116,7 +116,22 @@ if __name__ == '__main__':
         # # toBlit.append(pxarray.make_surface())
         # pxarray.close()
 
-        # update screen
+        rawFPS = clock.get_fps()
+        before,after = str(rawFPS).split(".")
+        fpsCount = f"{before}.{after[:2]}"
+        boxWidth = 0.05*MONITOR_WIDTH
+        boxHeight = 0.05*MONITOR_HEIGHT
+        boxBuffer = int(0.025*MONITOR_WIDTH)
+        fpsFont = pg.font.SysFont('Arial', int(boxHeight/4))
+        fpsBox = pg.Surface((boxWidth,boxHeight))
+        fpsBox.fill((0,0,0))
+        pg.draw.rect(fpsBox,(255,255,255),(0,0,boxWidth,boxHeight),2)
+        fpsBox.blit(fpsFont.render(f"{fpsCount}fps",True,(255,255,255)),(5,boxHeight/4))
+
+        toBlit.append((fpsBox,(boxBuffer,boxBuffer)))
+
+
+        ### update screen ###
 
         for sprite in toBlit:
             screen.blit(sprite[0],sprite[1])
