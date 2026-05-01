@@ -33,7 +33,7 @@ glyphFont = pg.font.Font('./src/txt/fonts/NaruMonoDemo-Regular.ttf', field.glyph
 def main():
 
     """
-    Custom events
+    custom events
     """
     pg.time.set_timer(DROPLET_CHECK, DROPLET_CHECKRATE)
 
@@ -49,8 +49,8 @@ def main():
 
         field.updated = []
 
-        # list of items to be rendered to the screen
-        toBlit = []
+        toBlit = [] # list of items to be rendered to the screen
+        toUpdate = [] # list of rects to be updated on screen
 
         # poll for events
 
@@ -66,15 +66,16 @@ def main():
                 if random.randint(0,9) > 5:
                     field.newDroplet(random.randint(0,field.columns-1))
                     pg.event.clear(DROPLET_CHECK)
-                    print("New droplet!")
 
         field.update()
 
         glyphs = []
 
         for glyph in field.updated:
+            if glyph.brightness > 0:
                 color = glyph.renderColor
                 glyphs.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
+            toUpdate.append(pg.Rect(glyph.blitLoc()[0], glyph.blitLoc()[1], field.cellWidth, field.cellHeight))
 
         for glyph in glyphs:
             pxarray = pg.PixelArray(glyph[0])
@@ -84,7 +85,9 @@ def main():
                     if not pxarray[column][row] == 16777215:
                         pxarray[column][row] = color
 
-            toBlit.append([pxarray.make_surface(),glyph[1]])
+            glyphSurf = pxarray.make_surface()
+            toBlit.append((glyphSurf,glyph[1]))
+
             pxarray.close()
 
         # wipe screen
@@ -96,7 +99,9 @@ def main():
 
         boxSize = (0.05*MONITOR_WIDTH,0.05*MONITOR_HEIGHT)
         boxBuffer = int(0.025*MONITOR_WIDTH)
-        toBlit.append((fpsBox(clock.get_fps(),boxSize),(boxBuffer,boxBuffer)))
+        counterBox = fpsBox(clock.get_fps(),boxSize)
+        toBlit.append((counterBox,(boxBuffer,boxBuffer)))
+        toUpdate.append(counterBox.get_rect(left=boxBuffer, top=boxBuffer))
 
         """
         update screen
@@ -106,10 +111,11 @@ def main():
             screen.blit(sprite[0],sprite[1])
             # screen.blit(sprite, (0,0))
 
-        pg.display.update()
+        # pg.display.update()
+        pg.display.update(toUpdate)
 
         clock.tick(CLOCK_SPEED)
-        timer += 1
+        timer += 2
 
     pg.quit()
 

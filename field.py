@@ -12,8 +12,8 @@ class Field:
         self.columns = columns
         self.rows = rows
         self.grid = []
-        self.cellHeight = int(self.height / self.rows)
         self.cellWidth = int(self.width / self.columns)
+        self.cellHeight = int(self.height / self.rows)
         self.glyphSize = int(0.95 * self.cellHeight)
         self.vertMarg = int(0.5 * (self.cellHeight - self.glyphSize))
         self.updated = []
@@ -34,6 +34,8 @@ class Field:
         self.droplets.append(Droplet(column, random.randint(1,6), self))
 
     def update(self):
+        self.updated = []
+
         for droplet in self.droplets:
             droplet.update()
 
@@ -41,3 +43,4 @@ class Field:
             for glyph in column:
                 if glyph.brightness > 0:
                     glyph.update()
+                    self.updated.append(glyph)

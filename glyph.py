@@ -31,8 +31,6 @@ class Glyph:
 
         # self.updateColor()
 
-        self.parent.updated.append(self)
-
 
     def blitLoc(self):
         return (self.location[0] + self.horMarg, self.location[1] + self.vertMarg)
