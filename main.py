@@ -82,22 +82,17 @@ def main():
         # # toBlit.append(pxarray.make_surface())
         # pxarray.close()
 
-        rawFPS = clock.get_fps()
-        before,after = str(rawFPS).split(".")
-        fpsCount = f"{before}.{after[:2]}"
-        boxWidth = 0.05*MONITOR_WIDTH
-        boxHeight = 0.05*MONITOR_HEIGHT
+        """
+        FPS counter
+        """
+
+        boxSize = (0.05*MONITOR_WIDTH,0.05*MONITOR_HEIGHT)
         boxBuffer = int(0.025*MONITOR_WIDTH)
-        fpsFont = pg.font.SysFont('Arial', int(boxHeight/4))
-        fpsBox = pg.Surface((boxWidth,boxHeight))
-        fpsBox.fill((0,0,0))
-        pg.draw.rect(fpsBox,(255,255,255),(0,0,boxWidth,boxHeight),2)
-        fpsBox.blit(fpsFont.render(f"{fpsCount}fps",True,(255,255,255)),(5,boxHeight/4))
+        toBlit.append((fpsBox(clock.get_fps(),boxSize),(boxBuffer,boxBuffer)))
 
-        toBlit.append((fpsBox,(boxBuffer,boxBuffer)))
-
-
-        ### update screen ###
+        """
+        update screen
+        """
 
         for sprite in toBlit:
             screen.blit(sprite[0],sprite[1])
@@ -147,8 +142,24 @@ def rainbowShader(location, timer):
 
     return output
 
-def fpsBox(surface, fps, size, location):
-    pass
+def fpsBox(fps, size):
+
+    returnSurf = pg.Surface(size) # create surface to be returned
+    returnSurf.fill((0,0,0))
+    pg.draw.rect(returnSurf,(255,255,255),(0,0,size[0],size[1]),2) # draw border to return surface
+
+    fpsCount = trunc(fps,2)
+    fpsFont = pg.font.SysFont('Arial', int(size[1]/3))
+    fpsText = fpsFont.render(str(fpsCount),True,(255,255,255))
+
+    returnSurf.blit(fpsText,((size[0]-fpsText.get_size()[0])/2,(size[1]-fpsText.get_size()[1])/2))
+
+    return returnSurf
+
+
+def trunc(number, decimals):
+    before,after = str(number).split(".")
+    return f"{before}.{after[:decimals]}fps"
 
 if __name__ == "__main__":
     main()
