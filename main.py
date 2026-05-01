@@ -65,7 +65,7 @@ def main():
 
         field.update()
 
-        if random.randint(0, 49) > 48:
+        if random.randint(0, 49) > 48 and clock.get_fps() >= CLOCK_SPEED*0.75:
             field.newDroplet(random.randint(0, field.columns - 1))
 
         glyphs = []
@@ -82,22 +82,11 @@ def main():
                         color = rainbowShader((glyph[1][0]+column, glyph[1][1]+row), timer)
                         pxarray[column][row] = color
 
-            # pxarray.replace((255,255,255), rainbowShader(glyph[1], timer), 0, (0.299, 0.587, 0.114))
-
             toBlit.append([pxarray.make_surface(),glyph[1]])
             pxarray.close()
 
         # wipe screen
         screen.fill((0,0,0))
-
-        # pxarray = pg.PixelArray(screen)
-        # for column in range(len(pxarray)):
-        #     for row in range(len(pxarray[column])):
-        #         color = rainbowShader((column, row), timer)
-        #         pxarray[column][row] = color
-        #
-        # # toBlit.append(pxarray.make_surface())
-        # pxarray.close()
 
         """
         FPS counter
