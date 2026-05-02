@@ -14,7 +14,7 @@ class Field:
         self.grid = []
         self.cellWidth = int(self.width / self.columns)
         self.cellHeight = int(self.height / self.rows)
-        self.glyphSize = int(0.95 * self.cellHeight)
+        self.glyphSize = int(1.2 * self.cellHeight)
         self.vertMarg = int(0.5 * (self.cellHeight - self.glyphSize))
         self.updated = []
         self.droplets = []
@@ -31,7 +31,7 @@ class Field:
             self.grid.append(rowContents)
 
     def newDroplet(self, column):
-        self.droplets.append(Droplet(column, random.randint(1,6), self))
+        self.droplets.append(Droplet(column, random.randint(2,6), self))
 
     def update(self):
         self.updated = []

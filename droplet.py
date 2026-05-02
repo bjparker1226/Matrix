@@ -23,3 +23,5 @@ class Droplet:
 
         else:
             self.parent.droplets.remove(self)
+
+        self.currentGlyph.brightness = 511

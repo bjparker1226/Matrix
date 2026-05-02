@@ -26,7 +26,7 @@ clock = pg.time.Clock()
 ### initialize Glyph Field ###
 
 field = field.Field(MONITOR_WIDTH, MONITOR_HEIGHT, 96, 54)
-glyphFont = pg.font.Font('./src/txt/fonts/NaruMonoDemo-Regular.ttf', field.glyphSize)
+# glyphFont = pg.font.Font('./src/txt/fonts/NaruMonoDemo-Regular.ttf', field.glyphSize)
 
 def main():
 

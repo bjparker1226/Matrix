@@ -10,7 +10,7 @@ class Glyph:
         self.transparency = 255
         self.location = (x, y)
         self.fontSize = int(fontSize)
-        self.fontPath = './src/txt/fonts/NaruMonoDemo-Regular.ttf'
+        self.fontPath = './src/txt/fonts/Matrix.ttf'
         self.font = pg.font.Font(self.fontPath, self.fontSize)
         self.parent = parent
 
@@ -27,7 +27,10 @@ class Glyph:
 
     def update(self):
 
-        self.char = random.choice(string.ascii_uppercase)
+        self.char = random.choice(string.ascii_letters)
+
+        if self.brightness > 255:
+            self.brightness -= 2
 
         self.brightness -= 2
         if self.brightness < 0:
@@ -44,7 +47,6 @@ class Glyph:
     def ping(self, duration: int):
         self.pingDuration = duration
         self.flashSpeed = duration
-        self.brightness = 511
         self.transparency = 255
 
     def draw(self) -> pg.Surface:
