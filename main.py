@@ -2,9 +2,7 @@ from unittest import case
 
 import pygame as pg
 from win32api import GetSystemMetrics
-from glyph import Glyph
-from droplet import Droplet
-import field, os, random, math
+import field, os, random, math, shaders
 
 """
 Declare globals
@@ -63,20 +61,17 @@ def main():
                     running = False
 
             elif event.type == DROPLET_CHECK and clock.get_fps() >= CLOCK_SPEED*0.8:
-                if random.randint(0,9) > 2:
+                if random.randint(0,9) > 6:
                     field.newDroplet(random.randint(0,field.columns-1))
                     pg.event.clear(DROPLET_CHECK)
 
         field.update()
 
+        shaders.ShaderHandler.shade(field.updated,"rainbow",timer)
+
         for glyph in field.updated:
-            color = rainbowShader(glyph.blitLoc(),timer)
-            if glyph.brightness > 0:
-                # glyphs.append([glyphFont.render(glyph.char, True, color), glyph.blitLoc()])
-                textSurf = glyphFont.render(glyph.char, True, color)
-                textSurf.set_alpha(glyph.brightness)
-                toBlit.append((textSurf,glyph.blitLoc()))
-            toUpdate.append(pg.Rect(glyph.blitLoc()[0], glyph.blitLoc()[1], field.cellWidth, field.cellHeight))
+            toBlit.append((glyph.draw(),glyph.blitLoc()))
+            toUpdate.append(glyph.rect())
 
 
         # wipe screen
@@ -107,43 +102,6 @@ def main():
         timer += 2
 
     pg.quit()
-
-def rainbowShader(location, timer):
-    loc = location
-    outCont = [255, 0, 0]
-    steps = math.floor((loc[0] + loc[1] + timer * 4) / 255)
-    remaining = (loc[0] + loc[1] + timer * 4) % 255
-
-    match steps % 6:
-        case 0:
-            outCont[1] += remaining
-        case 1:
-            outCont[0] -= remaining
-            outCont[1] = 255
-        case 2:
-            outCont[0] = 0
-            outCont[1] = 255
-            outCont[2] += remaining
-        case 3:
-            outCont[0] = 0
-            outCont[1] = 255 - remaining
-            outCont[2] = 255
-        case 4:
-            outCont[0] = 0 + remaining
-            outCont[1] = 0
-            outCont[2] = 255
-        case 5:
-            outCont[0] = 255
-            outCont[1] = 0
-            outCont[2] = 255 - remaining
-
-    output = [outCont[0], outCont[1], outCont[2]]
-    # print("Column #%d. %s steps! %s" % (location[0], steps, str(output)))
-
-    if loc[0] == 765:
-        pass
-
-    return output
 
 def fpsBox(fps, size):
 

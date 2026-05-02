@@ -7,10 +7,11 @@ class Glyph:
     def __init__(self, x, y, fontSize, parent):
         self.char = '0'
         self.brightness = 0
-        self.transparency = 0
+        self.transparency = 255
         self.location = (x, y)
         self.fontSize = int(fontSize)
         self.fontPath = './src/txt/fonts/NaruMonoDemo-Regular.ttf'
+        self.font = pg.font.Font(self.fontPath, self.fontSize)
         self.parent = parent
 
         kawi_pink = (255, 5, 109)
@@ -28,16 +29,34 @@ class Glyph:
 
         self.char = random.choice(string.ascii_uppercase)
 
-        self.brightness -= 1
+        self.brightness -= 2
+        if self.brightness < 0:
+            self.brightness = 0
 
-        # self.updateColor()
+        if self.brightness < self.transparency:
+            self.transparency = self.brightness
 
 
-    def blitLoc(self):
+    def blitLoc(self) -> tuple[int,int,int]:
         return (self.location[0] + self.horMarg, self.location[1] + self.vertMarg)
 
 
-    def ping(self, duration):
+    def ping(self, duration: int):
         self.pingDuration = duration
         self.flashSpeed = duration
-        self.brightness = 255
+        self.brightness = 511
+        self.transparency = 255
+
+    def draw(self) -> pg.Surface:
+        """Return surface object for blitting"""
+        returnSurf = self.font.render(self.char, True, self.renderColor)
+        returnSurf.set_alpha(self.transparency)
+        return returnSurf
+
+    def rect(self) -> pg.Rect:
+        """Return rect object for screen updating"""
+        rect = pg.Rect(*self.blitLoc(), self.parent.cellWidth, self.parent.cellHeight)
+        return rect
+
+    def setColor(self, color):
+        self.renderColor = color
