@@ -10,7 +10,7 @@ class ShaderHandler:
 
     @classmethod
     def shade(cls, items: Glyph | list[Glyph], shaders: Shader | list[Shader], timer) -> None:
-        """Apple all passed shaders on all passed items and return sprites of all items"""
+        """Apply all passed shaders on all passed items and return sprites of all items"""
 
         cls.timer = timer
 
