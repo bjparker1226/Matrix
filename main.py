@@ -3,6 +3,7 @@ from unittest import case
 import pygame as pg
 from win32api import GetSystemMetrics
 from shaderhandler import ShaderHandler
+from shaders import Shader
 import field, os, random, math
 
 """
@@ -68,7 +69,7 @@ def main():
 
         field.update()
 
-        ShaderHandler.shade(field.updated,"rainbow",timer)
+        ShaderHandler.shade(field.updated,Shader.RAINBOW,timer)
 
         for glyph in field.updated:
             toBlit.append((glyph.draw(),glyph.blitLoc()))

@@ -1,6 +1,7 @@
 import pygame as pg
 from glyph import Glyph
 from enum import Enum
+from shaders import Shader
 import math
 
 pg.init()
@@ -8,7 +9,7 @@ pg.init()
 class ShaderHandler:
 
     @classmethod
-    def shade(cls, items: Glyph | list[Glyph], shaders: str | list[str], timer) -> None:
+    def shade(cls, items: Glyph | list[Glyph], shaders: Shader | list[Shader], timer) -> None:
         """Enact all passed shaders on all passed items"""
 
         cls.timer = timer
@@ -46,12 +47,12 @@ class ShaderHandler:
                 color = cls.__shadeItem(items, shaders)
 
     @classmethod
-    def __shadeItem(cls, item: Glyph, shader: shaders.Shader) -> pg.Color:
+    def __shadeItem(cls, item: Glyph, shader: Shader) -> pg.Color:
         """calls appropriate shader function on passed item and returns the result"""
 
         match shader:
 
-            case "rainbow":
+            case Shader.RAINBOW:
                 return cls.__rainbow(item)
 
     @classmethod
