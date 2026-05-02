@@ -19,9 +19,9 @@ class Field:
         self.updated = []
         self.droplets = []
 
-        self.populate()
+        self.__populate()
 
-    def populate(self):
+    def __populate(self) -> None:
         for column in range(self.columns):
             rowContents = []
 
@@ -30,10 +30,10 @@ class Field:
 
             self.grid.append(rowContents)
 
-    def newDroplet(self, column):
+    def newDroplet(self, column: int) -> None:
         self.droplets.append(Droplet(column, random.randint(2,6), self))
 
-    def update(self):
+    def update(self) -> None:
         self.updated = []
 
         for droplet in self.droplets:

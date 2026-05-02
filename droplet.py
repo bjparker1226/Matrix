@@ -1,10 +1,10 @@
 import pygame as pg
-import random, math
+import random, math, field
 
 pg.init()
 
 class Droplet:
-    def __init__(self, column, speed, parent):
+    def __init__(self, column: int, speed: int, parent: field.Field) -> None:
         self.column = column
         self.speed = speed
         self.currentGlyph = parent.grid[column][0]
@@ -13,7 +13,7 @@ class Droplet:
         self.pingDuration = 60
         self.pingedGlyphs = []
 
-    def update(self):
+    def update(self) -> None:
         self.ypos += self.speed
         if math.trunc(self.ypos / self.parent.cellHeight) < self.parent.rows and self.ypos < self.parent.height:
             self.currentGlyph = self.parent.grid[self.column][math.trunc(self.ypos / self.parent.cellHeight)]

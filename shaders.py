@@ -4,9 +4,7 @@ import math
 
 pg.init()
 
-class ShaderHandler():
-    def __init__(self):
-        pass
+class ShaderHandler:
 
     @classmethod
     def shade(cls, items: Glyph | list[Glyph], shaders: str | list[str], timer) -> None:
@@ -14,24 +12,37 @@ class ShaderHandler():
 
         cls.timer = timer
 
-        """Is list of items"""
+        ### multiple items ###
         if isinstance(items, list):
 
             for item in items:
                 color = pg.Color(0,0,0)
 
-                """Is list of shaders"""
+                ### multiple shaders ###
                 if isinstance(shaders, list):
-                    pass
 
+                    for shader in shaders:
+                        color = cls.__shadeItem(item, shader)
+
+                ### single shader ###
                 else:
                     color = cls.__shadeItem(item, shaders)
 
                 item.setColor(color)
 
-
+        ### single item ###
         else:
-            pass
+            color = pg.Color(0,0,0)
+
+            ### multiple shaders ###
+            if isinstance(shaders, list):
+
+                for shader in shaders:
+                    color = cls.__shadeItem(items, shader)
+
+            ### single shader ###
+            else:
+                color = cls.__shadeItem(items, shaders)
 
     @classmethod
     def __shadeItem(cls, item: Glyph, shader: str) -> pg.Color:
@@ -70,8 +81,5 @@ class ShaderHandler():
                 outCont[2] = 255 - remaining
 
         output = [outCont[0], outCont[1], outCont[2]]
-
-        if loc[0] == 765:
-            pass
 
         return pg.Color(*output)

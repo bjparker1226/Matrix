@@ -1,10 +1,10 @@
 import pygame as pg
-import string, random
+import string, random, field
 
 pg.init()
 
 class Glyph:
-    def __init__(self, x, y, fontSize, parent):
+    def __init__(self, x: int, y: int, fontSize: int, parent: field.Field) -> None:
         self.char = '0'
         self.brightness = 0
         self.transparency = 255
@@ -13,9 +13,6 @@ class Glyph:
         self.fontPath = './src/txt/fonts/Matrix.ttf'
         self.font = pg.font.Font(self.fontPath, self.fontSize)
         self.parent = parent
-
-        kawi_pink = (255, 5, 109)
-        tropical_ocean = (0, 255, 208)
 
         self.vertMarg = parent.vertMarg
         self.horMarg = 0
@@ -44,14 +41,14 @@ class Glyph:
         return (self.location[0] + self.horMarg, self.location[1] + self.vertMarg)
 
 
-    def ping(self, duration: int):
+    def ping(self, duration: int) -> None:
         self.pingDuration = duration
         self.flashSpeed = duration
         self.transparency = 255
 
     def draw(self) -> pg.Surface:
         """Return surface object for blitting"""
-        self.factorBrightness()
+        self.__factorBrightness()
         returnSurf = self.font.render(self.char, True, self.renderColor)
         returnSurf.set_alpha(self.transparency)
         return returnSurf
@@ -61,10 +58,10 @@ class Glyph:
         rect = pg.Rect(*self.blitLoc(), self.parent.cellWidth, self.parent.cellHeight)
         return rect
 
-    def setColor(self, color: pg.Color):
+    def setColor(self, color: pg.Color) -> None:
         self.trueColor = color
 
-    def factorBrightness(self) -> None:
+    def __factorBrightness(self) -> None:
         if self.brightness > 255:
             ovrBrightness = self.brightness- 256
             r = self.trueColor[0]+(255 - self.trueColor[0])*(ovrBrightness)/255
