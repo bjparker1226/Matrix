@@ -2,7 +2,7 @@ from unittest import case
 
 import pygame as pg
 from win32api import GetSystemMetrics
-import field, os, random, math, shaders
+import field, os, random, math, shaderhandler
 
 """
 Declare globals

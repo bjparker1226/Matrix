@@ -1,5 +1,6 @@
 import pygame as pg
 from glyph import Glyph
+from enum import Enum
 import math
 
 pg.init()
@@ -45,13 +46,18 @@ class ShaderHandler:
                 color = cls.__shadeItem(items, shaders)
 
     @classmethod
-    def __shadeItem(cls, item: Glyph, shader: str) -> pg.Color:
+    def __shadeItem(cls, item: Glyph, shader: shaders.Shader) -> pg.Color:
+        """calls appropriate shader function on passed item and returns the result"""
+
         match shader:
+
             case "rainbow":
                 return cls.__rainbow(item)
 
     @classmethod
     def __rainbow(cls, item: Glyph) -> pg.Color:
+        """enacts rainbow algorithm over passed item and returns color based on items location"""
+
         loc = item.location
         outCont = [255, 0, 0]
         steps = math.floor((loc[0] + loc[1] + cls.timer * 4) / 255)
@@ -83,3 +89,7 @@ class ShaderHandler:
         output = [outCont[0], outCont[1], outCont[2]]
 
         return pg.Color(*output)
+
+class Shader(Enum):
+
+    RAINBOW = 0
