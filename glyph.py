@@ -19,7 +19,7 @@ class Glyph:
 
         self.vertMarg = parent.vertMarg
         self.horMarg = 0
-        self.trueColor = ((255,255,255))
+        self.trueColor = (255,255,255)
         self.renderColor = self.trueColor
         self.pingDuration = 0
         self.flashSpeed = 0
@@ -37,7 +37,7 @@ class Glyph:
             self.transparency = self.brightness
 
 
-    def blitLoc(self) -> tuple[int,int,int]:
+    def blitLoc(self) -> tuple[int,int]:
         return (self.location[0] + self.horMarg, self.location[1] + self.vertMarg)
 
 
@@ -49,6 +49,7 @@ class Glyph:
 
     def draw(self) -> pg.Surface:
         """Return surface object for blitting"""
+        self.factorBrightness()
         returnSurf = self.font.render(self.char, True, self.renderColor)
         returnSurf.set_alpha(self.transparency)
         return returnSurf
@@ -58,5 +59,13 @@ class Glyph:
         rect = pg.Rect(*self.blitLoc(), self.parent.cellWidth, self.parent.cellHeight)
         return rect
 
-    def setColor(self, color):
-        self.renderColor = color
+    def setColor(self, color: pg.Color):
+        self.trueColor = color
+
+    def factorBrightness(self) -> None:
+        if self.brightness > 255:
+            ovrBrightness = self.brightness- 256
+            r = self.trueColor[0]+(255 - self.trueColor[0])*(ovrBrightness)/255
+            g = self.trueColor[1]+(255 - self.trueColor[1])*(ovrBrightness)/255
+            b = self.trueColor[2]+(255 - self.trueColor[2])*(ovrBrightness)/255
+            self.renderColor = (r,g,b)
