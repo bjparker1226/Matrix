@@ -1,10 +1,10 @@
 import pygame as pg
-import string, random, field
+import string, random
 
 pg.init()
 
 class Glyph:
-    def __init__(self, x: int, y: int, fontSize: int, parent: field.Field) -> None:
+    def __init__(self, x: int, y: int, fontSize: int, parent) -> None:
         self.char = '0'
         self.brightness = 0
         self.transparency = 255

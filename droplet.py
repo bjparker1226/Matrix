@@ -1,10 +1,10 @@
 import pygame as pg
-import random, math, field
+import random, math
 
 pg.init()
 
 class Droplet:
-    def __init__(self, column: int, speed: int, parent: field.Field) -> None:
+    def __init__(self, column: int, speed: int, parent) -> None:
         self.column = column
         self.speed = speed
         self.currentGlyph = parent.grid[column][0]
