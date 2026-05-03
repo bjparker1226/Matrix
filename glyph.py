@@ -16,7 +16,7 @@ class Glyph:
 
         self.vertMarg = parent.vertMarg
         self.horMarg = 0
-        self.trueColor = (255,255,255)
+        self.trueColor = pg.Color(255,255,255)
         self.renderColor = self.trueColor
         self.pingDuration = 0
         self.flashSpeed = 0
@@ -64,7 +64,7 @@ class Glyph:
     def __factorBrightness(self) -> None:
         if self.brightness > 255:
             ovrBrightness = self.brightness- 256
-            r = self.trueColor[0]+(255 - self.trueColor[0])*(ovrBrightness)/255
-            g = self.trueColor[1]+(255 - self.trueColor[1])*(ovrBrightness)/255
-            b = self.trueColor[2]+(255 - self.trueColor[2])*(ovrBrightness)/255
+            r = self.trueColor.r+(255 - self.trueColor.r)*(ovrBrightness)/255
+            g = self.trueColor.g+(255 - self.trueColor.g)*(ovrBrightness)/255
+            b = self.trueColor.b+(255 - self.trueColor.b)*(ovrBrightness)/255
             self.renderColor = (r,g,b)

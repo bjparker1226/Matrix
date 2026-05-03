@@ -30,7 +30,6 @@ clock = pg.time.Clock()
 ### initialize Glyph Field ###
 
 field = field.Field(MONITOR_WIDTH, MONITOR_HEIGHT, 96, 54)
-# glyphFont = pg.font.Font('./src/txt/fonts/NaruMonoDemo-Regular.ttf', field.glyphSize)
 
 def main():
 
@@ -42,8 +41,6 @@ def main():
 
 
     running = True
-
-    tempGlyphColor = (255,255,255,255)
 
     timer = 0
 
@@ -71,8 +68,8 @@ def main():
 
         field.update()
 
-        # ShaderHandler.shade(field.updated,Shader.RAINBOW,timer)
-        ShaderHandler.color(field.updated, pg.Color(0,255,0))
+        ShaderHandler.shade(field.updated,Shader.RAINBOW,timer)
+        # ShaderHandler.color(field.updated, pg.Color(0,255,0))
 
         for glyph in field.updated:
             toBlit.append((glyph.draw(),glyph.blitLoc()))

@@ -68,7 +68,12 @@ class ShaderHandler:
         match shader:
 
             case Shader.RAINBOW:
-                return cls.__rainbow(item)
+                color = cls.__rainbow(item)
+                return color
+
+            case _:
+                color = pg.Color(0,0,0)
+                return color
 
     @classmethod
     def __rainbow(cls, item: Glyph) -> pg.Color:
@@ -105,7 +110,3 @@ class ShaderHandler:
         output = [outCont[0], outCont[1], outCont[2]]
 
         return pg.Color(*output)
-
-class Shader(Enum):
-
-    RAINBOW = 0
